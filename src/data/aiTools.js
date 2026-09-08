@@ -1,0 +1,169 @@
+const aiTools = [
+  {
+    id: 1,
+    name: "ChatGPT",
+    category: "AI Chat",
+    description:
+      "AI assistant for writing, research, coding, brainstorming and everyday tasks.",
+    icon: "💬",
+    color: "purple",
+    pricing: "Free + Paid",
+    url: "https://chatgpt.com/",
+  },
+  {
+    id: 2,
+    name: "Gemini",
+    category: "AI Chat",
+    description:
+      "AI assistant for research, writing, brainstorming and productivity.",
+    icon: "✦",
+    color: "blue",
+    pricing: "Free + Paid",
+    url: "https://gemini.google.com/",
+  },
+  {
+    id: 3,
+    name: "Claude",
+    category: "AI Chat",
+    description:
+      "AI assistant focused on writing, analysis, coding and long documents.",
+    icon: "◈",
+    color: "orange",
+    pricing: "Free + Paid",
+    url: "https://claude.ai/",
+  },
+  {
+    id: 4,
+    name: "OpenArt",
+    category: "AI Images",
+    description:
+      "Create AI images and creative visual content from text prompts.",
+    icon: "🎨",
+    color: "pink",
+    pricing: "Free + Paid",
+    url: "https://openart.ai/",
+  },
+  {
+    id: 5,
+    name: "Midjourney",
+    category: "AI Images",
+    description:
+      "Create artistic and highly detailed images using AI.",
+    icon: "🖼️",
+    color: "cyan",
+    pricing: "Paid",
+    url: "https://www.midjourney.com/",
+  },
+  {
+    id: 6,
+    name: "Ideogram",
+    category: "AI Images",
+    description:
+      "Generate creative images with strong text and graphic design capabilities.",
+    icon: "✏️",
+    color: "green",
+    pricing: "Free + Paid",
+    url: "https://ideogram.ai/",
+  },
+  {
+    id: 7,
+    name: "Runway",
+    category: "AI Video",
+    description:
+      "AI-powered tools for video generation, editing and creative production.",
+    icon: "🎬",
+    color: "purple",
+    pricing: "Free + Paid",
+    url: "https://app.runwayml.com/",
+  },
+  {
+    id: 8,
+    name: "Kling",
+    category: "AI Video",
+    description:
+      "Generate creative AI videos from text and images.",
+    icon: "▶",
+    color: "blue",
+    pricing: "Free + Paid",
+    url: "https://klingai.com/",
+  },
+  {
+    id: 9,
+    name: "Pika",
+    category: "AI Video",
+    description:
+      "Create and transform videos using generative AI.",
+    icon: "⚡",
+    color: "orange",
+    pricing: "Free + Paid",
+    url: "https://pika.art/",
+  },
+  {
+    id: 10,
+    name: "Grammarly",
+    category: "AI Writing",
+    description:
+      "Improve writing, grammar, clarity and communication with AI.",
+    icon: "Aa",
+    color: "green",
+    pricing: "Free + Paid",
+    url: "https://www.grammarly.com/",
+  },
+  {
+    id: 11,
+    name: "Jasper",
+    category: "AI Writing",
+    description:
+      "AI writing and marketing platform for businesses and creators.",
+    icon: "✍️",
+    color: "purple",
+    pricing: "Paid",
+    url: "https://www.jasper.ai/",
+  },
+  {
+    id: 12,
+    name: "ElevenLabs",
+    category: "AI Audio",
+    description:
+      "AI voice generation and audio tools for creators.",
+    icon: "🔊",
+    color: "cyan",
+    pricing: "Free + Paid",
+    url: "https://elevenlabs.io/",
+  },
+  {
+    id: 13,
+    name: "Suno",
+    category: "AI Audio",
+    description:
+      "Create songs and music using generative AI.",
+    icon: "♫",
+    color: "pink",
+    pricing: "Free + Paid",
+    url: "https://suno.com/",
+  },
+  {
+    id: 14,
+    name: "Notion AI",
+    category: "Productivity",
+    description:
+      "AI features for notes, documents, organization and productivity.",
+    icon: "N",
+    color: "orange",
+    pricing: "Free + Paid",
+    url: "https://www.notion.com/",
+  },
+  {
+    id: 15,
+    name: "Zapier",
+    category: "Productivity",
+    description:
+      "Automate repetitive workflows between apps and services.",
+    icon: "⚙",
+    color: "blue",
+    pricing: "Free + Paid",
+    url: "https://zapier.com/",
+  },
+];
+
+export default aiTools;

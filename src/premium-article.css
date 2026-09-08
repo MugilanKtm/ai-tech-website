@@ -1,0 +1,213 @@
+/* Premium Article Styles */
+
+.article-tool-card {
+  margin: 28px 0;
+  padding: 26px;
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(31, 25, 54, 0.95), rgba(18, 18, 31, 0.98));
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+.article-tool-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.article-tool-number {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: rgba(139, 92, 246, 0.16);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.article-tool-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+.article-tool-top h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.article-best-for {
+  margin: 16px 0;
+  padding: 13px 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.article-tool-card p {
+  line-height: 1.75;
+}
+
+.article-tool-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.article-pricing {
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.article-tool-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 17px;
+  cursor: pointer;
+  font-weight: 700;
+  background: #ffffff;
+  color: #171321;
+}
+
+.article-tool-button:hover {
+  transform: translateY(-1px);
+}
+
+.article-pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.article-pros-cons > div {
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.article-pros-cons strong {
+  display: block;
+  margin-bottom: 9px;
+}
+
+.article-pros-cons ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.article-pros-cons li {
+  margin: 7px 0;
+  line-height: 1.55;
+}
+
+.article-inline-image {
+  margin: 30px 0;
+}
+
+.article-inline-image img {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.article-inline-image figcaption {
+  margin-top: 9px;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.62;
+}
+
+.article-callout {
+  margin: 28px 0;
+  padding: 20px 22px;
+  border-left: 4px solid #8b5cf6;
+  border-radius: 12px;
+  background: rgba(139, 92, 246, 0.09);
+}
+
+.article-callout strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 17px;
+}
+
+.article-callout p {
+  margin: 0;
+}
+
+.article-table-wrap {
+  width: 100%;
+  margin: 28px 0;
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.article-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.article-table th,
+.article-table td {
+  padding: 14px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.article-table th {
+  font-size: 13px;
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.article-table td {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.article-table tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .article-tool-card {
+    padding: 20px;
+  }
+
+  .article-tool-top h3 {
+    font-size: 21px;
+  }
+
+  .article-tool-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .article-tool-button {
+    width: 100%;
+  }
+
+  .article-pros-cons {
+    grid-template-columns: 1fr;
+  }
+
+  .article-inline-image img {
+    max-height: 320px;
+  }
+}
