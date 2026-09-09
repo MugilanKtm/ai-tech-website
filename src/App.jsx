@@ -84,12 +84,15 @@ const toolCategories = [
    ========================================================= */
 
 function App() {
-  const initialArticleSlug = new URLSearchParams(window.location.search).get("article");
+  const initialParams = new URLSearchParams(window.location.search);
+  const initialArticleSlug = initialParams.get("article");
+  const initialLegalPage = initialParams.get("page");
   const initialArticle = articles.find(
     (item) => createArticleSlug(item) === initialArticleSlug
   ) || null;
 
   const [selectedArticle, setSelectedArticle] = useState(initialArticle);
+  const [legalPage, setLegalPage] = useState(initialLegalPage || null);
   const [showTools, setShowTools] = useState(false);
 
   const [toolCategory, setToolCategory] = useState("All");
@@ -97,6 +100,7 @@ function App() {
 
   const [articleCategory, setArticleCategory] = useState("All");
   const [articleSearch, setArticleSearch] = useState("");
+  const [showAllArticles, setShowAllArticles] = useState(false);
 
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -108,12 +112,30 @@ function App() {
   useEffect(() => {
     const article = selectedArticle;
     const slug = article ? createArticleSlug(article) : null;
+    const legalTitles = {
+      about: `About Us | ${SITE_NAME}`,
+      contact: `Contact Us | ${SITE_NAME}`,
+      privacy: `Privacy Policy | ${SITE_NAME}`,
+      terms: `Terms & Conditions | ${SITE_NAME}`,
+      disclaimer: `Disclaimer | ${SITE_NAME}`,
+    };
+    const legalDescriptions = {
+      about: "Learn about AI TechSphere, our mission, and how we help readers discover useful AI and technology resources.",
+      contact: "Contact AI TechSphere for questions, feedback, corrections, partnerships, or other inquiries.",
+      privacy: "Read the AI TechSphere privacy policy and learn how information is handled when you use our website.",
+      terms: "Read the terms and conditions that apply to your use of the AI TechSphere website.",
+      disclaimer: "Read the AI TechSphere disclaimer covering information, affiliate links, reviews, and external services.",
+    };
     const pageTitle = article
       ? `${article.title} | ${SITE_NAME}`
+      : legalPage
+      ? legalTitles[legalPage] || SITE_NAME
       : `${SITE_NAME} — AI Tools, Guides & Tech Reviews`;
-    const description = article?.excerpt || SITE_DESCRIPTION;
+    const description = article?.excerpt || legalDescriptions[legalPage] || SITE_DESCRIPTION;
     const canonicalUrl = article
       ? `${window.location.origin}${window.location.pathname}?article=${encodeURIComponent(slug)}`
+      : legalPage
+      ? `${window.location.origin}${window.location.pathname}?page=${encodeURIComponent(legalPage)}`
       : `${window.location.origin}${window.location.pathname}`;
 
     document.title = pageTitle;
@@ -137,43 +159,147 @@ function App() {
 
     upsertLink("canonical", canonicalUrl);
 
+    const siteUrl = `${window.location.origin}${window.location.pathname}`;
+    const organization = {
+      "@type": "Organization",
+      "@id": `${siteUrl}#organization`,
+      name: SITE_NAME,
+      url: siteUrl,
+    };
+
     const schema = article
       ? {
           "@context": "https://schema.org",
-          "@type": "Article",
-          headline: article.title,
+          "@graph": [
+            {
+              "@type": "Article",
+              "@id": `${canonicalUrl}#article`,
+              headline: article.title,
+              description,
+              image: article.image ? [article.image] : undefined,
+              datePublished: article.date,
+              dateModified: article.date,
+              articleSection: article.category,
+              inLanguage: "en",
+              author: {
+                "@type": "Organization",
+                name: article.author || SITE_NAME,
+                url: siteUrl,
+              },
+              publisher: {
+                "@id": `${siteUrl}#organization`,
+              },
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": canonicalUrl,
+              },
+              isPartOf: {
+                "@type": "WebSite",
+                "@id": `${siteUrl}#website`,
+                name: SITE_NAME,
+                url: siteUrl,
+              },
+            },
+            {
+              "@type": "WebPage",
+              "@id": canonicalUrl,
+              url: canonicalUrl,
+              name: pageTitle,
+              description,
+              isPartOf: {
+                "@id": `${siteUrl}#website`,
+              },
+              breadcrumb: {
+                "@id": `${canonicalUrl}#breadcrumb`,
+              },
+              inLanguage: "en",
+            },
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${canonicalUrl}#breadcrumb`,
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: SITE_NAME,
+                  item: siteUrl,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Articles",
+                  item: `${siteUrl}?articles=all`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: article.title,
+                  item: canonicalUrl,
+                },
+              ],
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${siteUrl}#website`,
+              name: SITE_NAME,
+              description: SITE_DESCRIPTION,
+              url: siteUrl,
+              publisher: {
+                "@id": `${siteUrl}#organization`,
+              },
+            },
+            organization,
+          ],
+        }
+      : legalPage
+      ? {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": `${canonicalUrl}#webpage`,
+          name: pageTitle,
           description,
-          image: article.image ? [article.image] : undefined,
-          datePublished: article.date,
-          dateModified: article.date,
-          author: {
-            "@type": "Organization",
-            name: article.author || SITE_NAME,
+          url: canonicalUrl,
+          inLanguage: "en",
+          isPartOf: {
+            "@id": `${siteUrl}#website`,
           },
           publisher: {
-            "@type": "Organization",
-            name: SITE_NAME,
+            "@id": `${siteUrl}#organization`,
           },
-          mainEntityOfPage: canonicalUrl,
         }
       : {
           "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: SITE_NAME,
-          description: SITE_DESCRIPTION,
-          url: `${window.location.origin}${window.location.pathname}`,
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": `${siteUrl}#website`,
+              name: SITE_NAME,
+              description: SITE_DESCRIPTION,
+              url: siteUrl,
+              inLanguage: "en",
+              publisher: {
+                "@id": `${siteUrl}#organization`,
+              },
+            },
+            {
+              ...organization,
+            },
+          ],
         };
 
     upsertStructuredData(schema);
-  }, [selectedArticle]);
+  }, [selectedArticle, legalPage]);
 
   useEffect(() => {
     const handlePopState = () => {
-      const slug = new URLSearchParams(window.location.search).get("article");
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("article");
+      const page = params.get("page");
       const article = articles.find(
         (item) => createArticleSlug(item) === slug
       ) || null;
       setSelectedArticle(article);
+      setLegalPage(page || null);
       setShowTools(false);
     };
 
@@ -234,7 +360,9 @@ function App() {
 
   const goHome = () => {
     setSelectedArticle(null);
+    setLegalPage(null);
     setShowTools(false);
+    setShowAllArticles(false);
 
     window.history.pushState({}, "", window.location.pathname);
 
@@ -246,6 +374,7 @@ function App() {
 
   const openTools = (category = "All") => {
     setSelectedArticle(null);
+    setLegalPage(null);
     setShowTools(true);
 
     setToolCategory(category);
@@ -259,7 +388,9 @@ function App() {
 
   const openArticles = (category = "All") => {
     setSelectedArticle(null);
+    setLegalPage(null);
     setShowTools(false);
+    setShowAllArticles(true);
 
     setArticleCategory(category);
 
@@ -274,6 +405,7 @@ function App() {
 
   const openArticle = (article) => {
     setSelectedArticle(article);
+    setLegalPage(null);
     setShowTools(false);
 
     const slug = createArticleSlug(article);
@@ -287,6 +419,14 @@ function App() {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const openLegalPage = (page) => {
+    setSelectedArticle(null);
+    setShowTools(false);
+    setLegalPage(page);
+    window.history.pushState({}, "", `?page=${encodeURIComponent(page)}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSubscribe = (e) => {
@@ -310,6 +450,140 @@ function App() {
         openArticles={openArticles}
         openArticle={openArticle}
       />
+    );
+  }
+
+  /* =======================================================
+     SHOW LEGAL / INFORMATION PAGE
+     ======================================================= */
+
+  if (legalPage) {
+    const legalContent = {
+      about: {
+        title: "About AI TechSphere",
+        intro: "AI TechSphere is an independent AI and technology publication focused on helping people discover useful tools, practical guides, tutorials, reviews and technology resources.",
+        sections: [
+          ["Our Mission", "Our goal is simple: make AI and technology easier to understand and easier to use. We organize useful tools and practical information so readers can spend less time searching and more time building, learning and creating."],
+          ["What We Cover", "We publish AI tool guides, technology explainers, comparisons, tutorials, creator workflows and practical tips. Information can change over time, so readers should also check the official website of a product or service for the latest details."],
+          ["Editorial Approach", "We aim to provide clear, useful and practical information. We may update articles when products, features or pricing change. If you notice an error or outdated information, please contact us so we can review it."]
+        ]
+      },
+      contact: {
+        title: "Contact Us",
+        intro: "Have a question, correction, suggestion or partnership inquiry? We would love to hear from you.",
+        sections: [
+          ["General Questions", "For questions about our articles, AI tools directory or website, please contact the AI TechSphere team by email."],
+          ["Corrections & Feedback", "If you find inaccurate, outdated or misleading information, please tell us the article title and the specific issue so we can review it."],
+          ["Business & Partnerships", "For advertising, affiliate, partnership or collaboration inquiries, please include your company or project name and a short description of your proposal."]
+        ],
+        email: "contact@aitechspherehub.com"
+      },
+      privacy: {
+        title: "Privacy Policy",
+        intro: "This Privacy Policy explains, in general terms, how AI TechSphere handles information when you use this website.",
+        sections: [
+          ["Information You Provide", "If you voluntarily submit information through a contact or newsletter form, we may receive the information you choose to provide. Do not submit sensitive personal information through forms on this website."],
+          ["Analytics & Cookies", "The website may use analytics and cookies provided by third-party services. These services may collect information such as device type, browser information, approximate location, pages visited and interaction data according to their own policies. We use such technologies only as permitted by applicable law and the settings of the services we use."],
+          ["Google Advertising & Personalized Ads", "If Google AdSense or other Google advertising services are enabled on AI TechSphere, third-party vendors, including Google, may use cookies to serve ads based on a user's prior visits to this website or other websites. Google's advertising cookies may help Google and its partners select and measure ads. Users can manage or opt out of personalized advertising through Google Ads Settings at https://adssettings.google.com/. Google may also use other technologies and signals as described in its own policies."],
+          ["Third-Party Advertising Vendors", "If third-party advertising networks or vendors other than Google are used, AI TechSphere may identify those vendors in this policy and provide information about their applicable privacy choices. Users may also use available industry opt-out resources, such as https://optout.aboutads.info/, where applicable."],
+          ["External Links", "AI TechSphere links to external websites and services. Once you leave our website, the external service's privacy policy and terms apply."],
+          ["Updates", "We may update this Privacy Policy when the website, services or legal requirements change. Please check this page periodically for the latest version."]
+        ]
+      },
+      terms: {
+        title: "Terms & Conditions",
+        intro: "By using AI TechSphere, you agree to use the website responsibly and in accordance with these general terms.",
+        sections: [
+          ["Website Content", "The articles, guides and tool information on AI TechSphere are provided for general informational and educational purposes. We do not guarantee that every piece of information will always be complete, current or error-free."],
+          ["External Services", "AI TechSphere may link to third-party AI tools, software and websites. We are not responsible for the availability, policies, pricing, performance or content of those external services."],
+          ["Acceptable Use", "Do not use the website to engage in unlawful activity, abuse our forms or systems, attempt unauthorized access, or interfere with the operation of the website."],
+          ["Changes", "We may update website content, features or these terms from time to time. Continued use of the website after changes means you accept the updated terms."]
+        ]
+      },
+      disclaimer: {
+        title: "Disclaimer",
+        intro: "The information on AI TechSphere is provided for general informational and educational purposes.",
+        sections: [
+          ["Accuracy", "We make reasonable efforts to provide useful and accurate information, but AI products, software features, pricing and availability can change quickly. Always verify important details with the official provider before making a decision."],
+          ["Reviews & Recommendations", "Our reviews, comparisons and recommendations reflect the information and evaluation available when an article is prepared. They are not guarantees of future performance or suitability for every user."],
+          ["Affiliate Links", "Some links on AI TechSphere may be affiliate links. If you purchase or sign up through an eligible link, we may receive a commission at no additional cost to you. Affiliate relationships do not guarantee a positive review."],
+          ["No Professional Advice", "Our content should not be treated as legal, financial, medical, security or other professional advice. Seek a qualified professional when you need advice for a specific situation."]
+        ]
+      }
+    };
+
+    const page = legalContent[legalPage] || legalContent.about;
+
+    return (
+      <div className="app">
+        <header className="navbar">
+          <div className="nav-container">
+            <button className="logo" onClick={goHome}>
+              <span className="logo-icon">AI</span>
+              <span>TechSphere</span>
+            </button>
+            <nav className="nav-links">
+              <button onClick={goHome}>Home</button>
+              <button onClick={() => openTools("All")}>AI Tools</button>
+              <button onClick={() => openArticles("All")}>Articles</button>
+              <button onClick={() => openArticles("How-To")}>How-To</button>
+            </nav>
+            <button className="nav-button" onClick={() => openTools("All")}>Explore AI</button>
+          </div>
+        </header>
+
+        <main style={{ maxWidth: "900px", margin: "0 auto", padding: "80px 24px 100px" }}>
+          <button type="button" onClick={goHome} style={{ marginBottom: "28px", background: "transparent", border: "none", color: "inherit", cursor: "pointer", fontSize: "15px" }}>
+            ← Back to AI TechSphere
+          </button>
+
+          <div style={{ maxWidth: "780px" }}>
+            <div className="section-label"><span></span>AI TECHSPHERE</div>
+            <h1 style={{ fontSize: "clamp(38px, 6vw, 64px)", lineHeight: 1.05, marginBottom: "22px" }}>{page.title}</h1>
+            <p style={{ fontSize: "19px", lineHeight: 1.8, opacity: 0.82, marginBottom: "44px" }}>{page.intro}</p>
+
+            {page.email && (
+              <div style={{ padding: "22px 24px", borderRadius: "16px", marginBottom: "42px", border: "1px solid rgba(255,255,255,0.12)" }}>
+                <strong>Email:</strong> {page.email}
+              </div>
+            )}
+
+            {page.sections.map(([heading, text]) => (
+              <section key={heading} style={{ marginBottom: "36px" }}>
+                <h2 style={{ fontSize: "28px", marginBottom: "12px" }}>{heading}</h2>
+                {heading === "Google Advertising & Personalized Ads" ? (
+                  <p style={{ fontSize: "17px", lineHeight: 1.85, opacity: 0.84 }}>
+                    If Google AdSense or other Google advertising services are enabled on AI TechSphere, third-party vendors, including Google, may use cookies to serve ads based on a user's prior visits to this website or other websites. Google's advertising cookies may help Google and its partners select and measure ads. Users can manage or opt out of personalized advertising through{" "}
+                    <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>
+                      Google Ads Settings
+                    </a>
+                    . Google may also use other technologies and signals as described in its own policies.
+                  </p>
+                ) : heading === "Third-Party Advertising Vendors" ? (
+                  <p style={{ fontSize: "17px", lineHeight: 1.85, opacity: 0.84 }}>
+                    If third-party advertising networks or vendors other than Google are used, AI TechSphere may identify those vendors in this policy and provide information about their applicable privacy choices. Users may also use available industry opt-out resources, such as{" "}
+                    <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>
+                      AboutAds.info
+                    </a>
+                    , where applicable.
+                  </p>
+                ) : (
+                  <p style={{ fontSize: "17px", lineHeight: 1.85, opacity: 0.84 }}>{text}</p>
+                )}
+              </section>
+            ))}
+          </div>
+        </main>
+
+        <footer className="footer">
+          <div className="section-container">
+            <div className="footer-bottom">
+              <span>© 2026 AI TechSphere. All rights reserved.</span>
+              <span>Built for the AI generation 🚀</span>
+            </div>
+          </div>
+        </footer>
+      </div>
     );
   }
 
@@ -399,7 +673,7 @@ function App() {
         <div className="hero-content">
 
           <div className="hero-badge">
-            🚀 AI & Tech Discovery Platform
+            🚀 AI tools, guides & practical tech
           </div>
 
           <h1>
@@ -410,9 +684,8 @@ function App() {
           </h1>
 
           <p>
-            Explore the best AI tools, technology guides,
-            reviews, tutorials and the latest trends —
-            all in one place.
+            Find useful AI tools, practical guides, honest comparisons and
+            creator-friendly tutorials — all in one place.
           </p>
 
           <div className="hero-buttons">
@@ -441,8 +714,8 @@ function App() {
             </div>
 
             <div>
-              <strong>50+</strong>
-              <span>Guides</span>
+              <strong>15+</strong>
+              <span>Articles</span>
             </div>
 
             <div>
@@ -466,7 +739,7 @@ function App() {
 
           <input
             type="text"
-            placeholder="Search AI tools, articles and guides..."
+            placeholder="Search articles, guides and comparisons..."
             value={articleSearch}
             onChange={(e) => {
               setArticleSearch(e.target.value);
@@ -477,7 +750,7 @@ function App() {
           <button
             onClick={() => openTools("All")}
           >
-            Search Tools
+            Browse AI Tools
           </button>
 
         </div>
@@ -496,13 +769,42 @@ function App() {
               FEATURED STORY
             </div>
 
-            <div className="featured-card">
+            <article
+              className="featured-card"
+              style={{
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              <div
+                className="featured-content"
+                style={{
+                  position: "relative",
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                    marginBottom: "16px",
+                  }}
+                >
+                  <span className="article-category">
+                    {articles[0].category}
+                  </span>
 
-              <div className="featured-content">
-
-                <span className="article-category">
-                  {articles[0].category}
-                </span>
+                  <span
+                    style={{
+                      fontSize: "13px",
+                      color: "rgba(255,255,255,0.62)",
+                    }}
+                  >
+                    ✦ Editor's Pick
+                  </span>
+                </div>
 
                 <h2>
                   {articles[0].title}
@@ -512,6 +814,23 @@ function App() {
                   {articles[0].excerpt}
                 </p>
 
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    flexWrap: "wrap",
+                    marginBottom: "22px",
+                    color: "rgba(255,255,255,0.62)",
+                    fontSize: "14px",
+                  }}
+                >
+                  <span>📖 Practical guide</span>
+                  {articles[0].readTime && (
+                    <span>• {articles[0].readTime}</span>
+                  )}
+                </div>
+
                 <button
                   className="read-button"
                   onClick={() =>
@@ -520,18 +839,65 @@ function App() {
                 >
                   Read Full Article →
                 </button>
-
               </div>
 
-              <div className="featured-visual">
-
-                <div className="featured-orb">
-                  AI
-                </div>
-
+              <div
+                className="featured-visual"
+                style={{
+                  position: "relative",
+                  minHeight: "100%",
+                  overflow: "hidden",
+                }}
+              >
+                {articles[0].image ? (
+                  <>
+                    <img
+                      src={articles[0].image}
+                      alt={articles[0].title}
+                      loading="eager"
+                      decoding="async"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        minHeight: "320px",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                    <div
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(90deg, rgba(16,18,45,0.1), rgba(16,18,45,0.38))",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: "18px",
+                        bottom: "18px",
+                        padding: "10px 14px",
+                        borderRadius: "12px",
+                        background: "rgba(10,12,30,0.72)",
+                        border: "1px solid rgba(255,255,255,0.14)",
+                        backdropFilter: "blur(10px)",
+                        color: "white",
+                        fontSize: "13px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Featured guide ↗
+                    </div>
+                  </>
+                ) : (
+                  <div className="featured-orb">
+                    AI
+                  </div>
+                )}
               </div>
-
-            </div>
+            </article>
 
           </div>
 
@@ -557,8 +923,13 @@ function App() {
               </div>
 
               <h2>
-                Learn. Explore. Build.
+                Practical AI & Tech, without the noise.
               </h2>
+
+              <p>
+                Clear guides, comparisons and useful ideas to help you choose tools
+                and get more from today's technology.
+              </p>
 
             </div>
 
@@ -622,7 +993,10 @@ function App() {
 
           <div className="article-grid">
 
-            {filteredArticles.map((article) => (
+            {(showAllArticles || articleSearch.trim()
+              ? filteredArticles
+              : filteredArticles.slice(0, 9)
+            ).map((article) => (
 
               <article
                 className="article-card"
@@ -889,7 +1263,132 @@ function App() {
 
       </section>
 
-      {/* REVIEWS */}
+      {/* EDITORIAL TRUST */}
+
+      <section
+        className="editorial-trust-section"
+        style={{
+          padding: "72px 0",
+          background: "rgba(255,255,255,0.02)",
+        }}
+      >
+        <div className="section-container">
+          <div
+            style={{
+              maxWidth: "820px",
+              margin: "0 auto",
+              textAlign: "center",
+            }}
+          >
+            <div className="section-label centered-label">
+              <span></span>
+              EDITORIAL APPROACH
+              <span></span>
+            </div>
+
+            <h2 style={{ marginBottom: "16px" }}>
+              Practical AI information you can trust.
+            </h2>
+
+            <p
+              style={{
+                maxWidth: "720px",
+                margin: "0 auto 30px",
+                lineHeight: 1.8,
+              }}
+            >
+              AI TechSphere focuses on useful tools, practical tutorials,
+              comparisons and creator workflows. We aim to explain products
+              clearly, keep information useful, and point readers to official
+              sources when features or pricing can change.
+            </p>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: "16px",
+                marginTop: "28px",
+              }}
+            >
+              <div
+                style={{
+                  padding: "22px 18px",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                }}
+              >
+                <strong style={{ display: "block", marginBottom: "8px" }}>
+                  ✦ Practical
+                </strong>
+                <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
+                  Clear guides focused on real use cases.
+                </span>
+              </div>
+
+              <div
+                style={{
+                  padding: "22px 18px",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                }}
+              >
+                <strong style={{ display: "block", marginBottom: "8px" }}>
+                  ✓ Transparent
+                </strong>
+                <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
+                  Recommendations and affiliate relationships are disclosed.
+                </span>
+              </div>
+
+              <div
+                style={{
+                  padding: "22px 18px",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                }}
+              >
+                <strong style={{ display: "block", marginBottom: "8px" }}>
+                  ↻ Updated
+                </strong>
+                <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
+                  We review content as tools and features evolve.
+                </span>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "12px",
+                flexWrap: "wrap",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => openLegalPage("about")}
+              >
+                About Us
+              </button>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => openLegalPage("disclaimer")}
+              >
+                Editorial & Affiliate Disclosure
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* READER VALUE */}
 
       <section className="reviews-section">
 
@@ -901,12 +1400,12 @@ function App() {
 
               <div className="section-label centered-label">
                 <span></span>
-                COMMUNITY
+                WHY AI TECHSPHERE
                 <span></span>
               </div>
 
               <h2>
-                What Readers Say
+                Built for practical AI discovery.
               </h2>
 
             </div>
@@ -916,55 +1415,27 @@ function App() {
           <div className="reviews-grid">
 
             <div className="review-card">
-
-              <div className="stars">
-                ★★★★★
-              </div>
-
+              <div className="stars">✦</div>
+              <h3>Practical guides</h3>
               <p>
-                "The AI tool guides make it
-                much easier to choose the
-                right tools."
+                Step-by-step explainers, workflows and comparisons designed around real tasks.
               </p>
-
-              <strong>
-                — Tech Creator
-              </strong>
-
             </div>
 
             <div className="review-card">
-
-              <div className="stars">
-                ★★★★★
-              </div>
-
+              <div className="stars">✓</div>
+              <h3>Clear recommendations</h3>
               <p>
-                "Simple explanations and
-                useful AI recommendations."
+                We explain what a tool is useful for, who it may suit and what to check before using it.
               </p>
-
-              <strong>
-                — Digital Marketer
-              </strong>
-
             </div>
 
             <div className="review-card">
-
-              <div className="stars">
-                ★★★★★
-              </div>
-
+              <div className="stars">↻</div>
+              <h3>Useful over time</h3>
               <p>
-                "A great place to discover
-                new AI tools."
+                AI products change quickly, so our guides can be reviewed and updated as information evolves.
               </p>
-
-              <strong>
-                — Content Creator
-              </strong>
-
             </div>
 
           </div>
@@ -989,46 +1460,22 @@ function App() {
               </div>
 
               <h2>
-                Get the latest AI & Tech updates.
+                More AI & Tech guides are on the way.
               </h2>
 
               <p>
-                New tools, useful guides and important
-                technology news delivered to your inbox.
+                We are building the newsletter experience. For now, explore the latest guides and AI tools on AI TechSphere.
               </p>
 
             </div>
 
-            {!subscribed ? (
-
-              <form
-                className="newsletter-form"
-                onSubmit={handleSubscribe}
-              >
-
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
-                  required
-                />
-
-                <button type="submit">
-                  Subscribe
-                </button>
-
-              </form>
-
-            ) : (
-
-              <div className="subscribe-success">
-                ✅ Thanks for subscribing!
-              </div>
-
-            )}
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => openArticles("All")}
+            >
+              Browse Latest Articles →
+            </button>
 
           </div>
 
@@ -1153,6 +1600,12 @@ function App() {
               >
                 Productivity
               </button>
+
+              <button onClick={() => openLegalPage("about")}>About Us</button>
+              <button onClick={() => openLegalPage("contact")}>Contact Us</button>
+              <button onClick={() => openLegalPage("privacy")}>Privacy Policy</button>
+              <button onClick={() => openLegalPage("terms")}>Terms & Conditions</button>
+              <button onClick={() => openLegalPage("disclaimer")}>Disclaimer</button>
 
             </div>
 
