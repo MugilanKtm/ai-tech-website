@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import articles from "./data/articles";
 import aiTools from "./data/aiTools";
 import ArticlePage from "./components/ArticlePage";
@@ -87,6 +87,7 @@ const AI_NEWS_UPDATED = "September 22, 2026";
 const aiNews = [
   {
     id: "alibaba-model-chip",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=85",
     category: "AI Infrastructure",
     date: "Sep 22, 2026",
     source: "Reuters",
@@ -101,6 +102,7 @@ const aiNews = [
   },
   {
     id: "deepseek-un-security",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85",
     category: "AI & Society",
     date: "Sep 22, 2026",
     source: "Reuters",
@@ -115,6 +117,7 @@ const aiNews = [
   },
   {
     id: "uk-ai-security-hearing",
+    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=85",
     category: "AI Safety",
     date: "Sep 22, 2026",
     source: "UK Parliament",
@@ -129,6 +132,7 @@ const aiNews = [
   },
   {
     id: "openai-news-sept",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85",
     category: "OpenAI",
     date: "Sep 16, 2026",
     source: "OpenAI",
@@ -142,6 +146,7 @@ const aiNews = [
   },
   {
     id: "openai-agents-api",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85",
     category: "AI Agents",
     date: "Sep 10, 2026",
     source: "OpenAI",
@@ -155,6 +160,7 @@ const aiNews = [
   },
   {
     id: "meta-muse",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=85",
     category: "AI Agents",
     date: "Sep 8, 2026",
     source: "Meta",
@@ -169,6 +175,7 @@ const aiNews = [
   },
   {
     id: "meta-one",
+    image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?auto=format&fit=crop&w=1200&q=85",
     category: "AI Products",
     date: "Sep 15, 2026",
     source: "Meta",
@@ -183,6 +190,7 @@ const aiNews = [
   },
   {
     id: "anthropic-metrics",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85",
     category: "AI Safety",
     date: "Sep 17, 2026",
     source: "Anthropic",
@@ -197,6 +205,7 @@ const aiNews = [
   },
   {
     id: "anthropic-misuse",
+    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=85",
     category: "AI Security",
     date: "Sep 10, 2026",
     source: "Anthropic",
@@ -211,6 +220,7 @@ const aiNews = [
   },
   {
     id: "australia-ai-training",
+    image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85",
     category: "AI & Society",
     date: "Sep 22, 2026",
     source: "Reuters",
@@ -225,6 +235,7 @@ const aiNews = [
   },
   {
     id: "crusoe-infrastructure",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85",
     category: "AI Infrastructure",
     date: "Sep 17, 2026",
     source: "Reuters",
@@ -241,73 +252,73 @@ const aiNews = [
 
 const aiExplainers = [
   {
-    icon: "🤖",
+    icon: "ðŸ¤–",
     title: "AI Agents",
     text:
       "Agents combine a model with tools, memory, instructions and permission boundaries so they can complete multi-step tasks. The useful question is not whether an agent sounds intelligent, but whether it can reliably complete a defined workflow.",
   },
   {
-    icon: "🧠",
+    icon: "ðŸ§ ",
     title: "Reasoning Models",
     text:
       "Reasoning-focused systems spend more effort on complex problems such as planning, coding, mathematics and multi-stage analysis. More reasoning can improve difficult tasks, but it can also increase latency and cost.",
   },
   {
-    icon: "👁️",
+    icon: "ðŸ‘ï¸",
     title: "Multimodal AI",
     text:
       "Multimodal systems work across combinations of text, images, audio, video and other inputs. This enables workflows such as asking questions about screenshots, analyzing documents or creating media from mixed references.",
   },
   {
-    icon: "🔎",
+    icon: "ðŸ”Ž",
     title: "AI Search & Research",
     text:
       "AI search systems can summarize information and help discover sources quickly. For important claims, the safest workflow remains source discovery followed by opening and checking the original material.",
   },
   {
-    icon: "🗂️",
+    icon: "ðŸ—‚ï¸",
     title: "RAG & Knowledge Bases",
     text:
       "Retrieval-augmented generation connects an AI model to a selected collection of information. It is useful when the answer needs to be grounded in company documents, product manuals, research papers or other controlled sources.",
   },
   {
-    icon: "💻",
+    icon: "ðŸ’»",
     title: "AI Coding",
     text:
       "Coding assistants can explain errors, generate boilerplate, refactor code and help explore unfamiliar libraries. Generated code should still be reviewed, tested and checked against the exact versions used by a project.",
   },
   {
-    icon: "🎨",
+    icon: "ðŸŽ¨",
     title: "AI Image Creation",
     text:
       "Modern image workflows combine prompting, references, editing and design rather than relying on one generation. The final quality often depends on composition, iteration and post-generation typography.",
   },
   {
-    icon: "🎬",
+    icon: "ðŸŽ¬",
     title: "AI Video",
     text:
       "Text-to-video and image-to-video tools are useful for concept shots, social clips and creative experiments. Short controlled generations are often easier to edit into a finished sequence than one huge prompt.",
   },
   {
-    icon: "🎙️",
+    icon: "ðŸŽ™ï¸",
     title: "AI Voice & Music",
     text:
       "Voice and music models can accelerate narration, prototypes and creative production. Commercial projects should check current licensing, voice rights and platform-specific usage rules before publication.",
   },
   {
-    icon: "🖥️",
+    icon: "ðŸ–¥ï¸",
     title: "Local AI",
     text:
       "Local models run on a user's own computer or private infrastructure. They can offer more control over data and offline use, while requiring compatible hardware and sometimes sacrificing model capability or convenience.",
   },
   {
-    icon: "🔐",
+    icon: "ðŸ”",
     title: "AI Security",
     text:
       "AI security includes prompt injection, data leakage, unsafe tool use, model misuse and excessive agent permissions. Treat connected tools as part of the security boundary rather than assuming the model itself is the only risk.",
   },
   {
-    icon: "⚙️",
+    icon: "âš™ï¸",
     title: "AI Automation",
     text:
       "Automation connects AI to repeatable business or creator workflows. A good automation has a clear trigger, bounded permissions, a useful output and a human checkpoint when an action can create real consequences.",
@@ -316,46 +327,46 @@ const aiExplainers = [
 
 const aiUseCases = [
   {
-    icon: "🎓",
+    icon: "ðŸŽ“",
     title: "Students",
     text:
       "Use AI to explain difficult concepts, generate practice questions, organize revision and provide feedback on your own drafts. Keep the learning process active instead of outsourcing every assignment.",
-    workflow: "Explain → practice → review → revise",
+    workflow: "Explain â†’ practice â†’ review â†’ revise",
   },
   {
-    icon: "🎥",
+    icon: "ðŸŽ¥",
     title: "YouTubers & Creators",
     text:
       "Use AI for topic research, outlines, scripts, thumbnail concepts, images, video ideas, captions and voice workflows. Human storytelling and final editing remain important.",
-    workflow: "Research → script → visual → edit → publish",
+    workflow: "Research â†’ script â†’ visual â†’ edit â†’ publish",
   },
   {
-    icon: "👨‍💻",
+    icon: "ðŸ‘¨â€ðŸ’»",
     title: "Developers",
     text:
       "AI can accelerate debugging, documentation, tests, refactoring and repetitive code. Give it exact context and verify generated changes locally before committing.",
-    workflow: "Context → generate → test → review",
+    workflow: "Context â†’ generate â†’ test â†’ review",
   },
   {
-    icon: "🏪",
+    icon: "ðŸª",
     title: "Small Businesses",
     text:
       "AI can help with customer-response drafts, product descriptions, market research, internal documentation and simple workflow automation.",
-    workflow: "Collect → draft → review → automate",
+    workflow: "Collect â†’ draft â†’ review â†’ automate",
   },
   {
-    icon: "📣",
+    icon: "ðŸ“£",
     title: "Marketers",
     text:
       "Use AI for campaign ideas, content variations, research, audience questions and creative testing while keeping brand claims and factual statements under human review.",
-    workflow: "Brief → variations → verify → test",
+    workflow: "Brief â†’ variations â†’ verify â†’ test",
   },
   {
-    icon: "💼",
+    icon: "ðŸ’¼",
     title: "Job Seekers",
     text:
       "AI can help tailor resumes, practice interviews, organize job research and improve professional writing. Do not let generated material misrepresent your experience.",
-    workflow: "Target → draft → personalize → practice",
+    workflow: "Target â†’ draft â†’ personalize â†’ practice",
   },
 ];
 
@@ -448,7 +459,7 @@ function PublisherToolsPage({
     "AI Chat": "AI chat tools are useful for research, drafting, brainstorming, summarizing and everyday problem solving. Compare how well each tool handles your actual prompts, sources, context length, privacy needs and workflow before paying.",
     "AI Images": "AI image generators differ in prompt control, editing, consistency, typography, commercial-use terms and output limits. Test the type of images you actually create rather than relying only on showcase examples.",
     "AI Video": "AI video tools can help with short-form clips, product visuals, animation and creative experiments. Compare generation quality, consistency, credits, rendering time and licensing before choosing a workflow.",
-    "AI Writing": "AI writing assistants can speed up drafting, rewriting, editing and content planning. The useful comparison is not simply which tool writes the most—it is which one produces a draft that needs the least correction for your specific work.",
+    "AI Writing": "AI writing assistants can speed up drafting, rewriting, editing and content planning. The useful comparison is not simply which tool writes the mostâ€”it is which one produces a draft that needs the least correction for your specific work.",
     "AI Audio": "AI audio tools cover voice generation, music, sound design and speech workflows. Check voice quality, pronunciation, commercial rights, usage limits and whether your intended use is supported.",
     Productivity: "AI productivity tools can automate repetitive work, organize information and connect services. Before adopting one, check integrations, permissions, reliability, pricing and the amount of manual review still required.",
   };
@@ -487,7 +498,7 @@ function PublisherToolsPage({
             </p>
 
             <div className="tools-search" role="search">
-              <span aria-hidden="true">🔍</span>
+              <span aria-hidden="true">ðŸ”</span>
               <input
                 type="search"
                 aria-label="Search AI tools"
@@ -501,15 +512,15 @@ function PublisherToolsPage({
                   aria-label="Clear tool search"
                   onClick={() => setToolSearch("")}
                   style={{ border: 0, background: "transparent", cursor: "pointer", fontSize: "18px", opacity: 0.65, padding: "4px 8px" }}
-                >×</button>
+                >Ã—</button>
               )}
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "18px", color: "rgba(255,255,255,0.72)", fontSize: "14px" }}>
-              <span>✓ Curated categories</span>
-              <span>✓ Official provider links</span>
-              <span>✓ Free & paid options</span>
-              <span>✓ Practical selection guidance</span>
+              <span>âœ“ Curated categories</span>
+              <span>âœ“ Official provider links</span>
+              <span>âœ“ Free & paid options</span>
+              <span>âœ“ Practical selection guidance</span>
             </div>
           </div>
         </section>
@@ -570,7 +581,7 @@ function PublisherToolsPage({
                         rel={isAffiliate ? "sponsored noopener noreferrer" : "noopener noreferrer"}
                         aria-label={`${isAffiliate ? tool.affiliateLabel || `Try ${tool.name}` : `Visit ${tool.name}`} opens in a new tab`}
                       >
-                        {isAffiliate ? tool.affiliateLabel || `Try ${tool.name} →` : "Visit Tool"}<span>↗</span>
+                        {isAffiliate ? tool.affiliateLabel || `Try ${tool.name} â†’` : "Visit Tool"}<span>â†—</span>
                       </a>
                     </div>
                   </article>
@@ -580,9 +591,9 @@ function PublisherToolsPage({
 
             {tools.length === 0 && (
               <div className="no-tools">
-                <div>🔎</div>
+                <div>ðŸ”Ž</div>
                 <h3>No AI tools found</h3>
-                <p>{hasSearch ? `We couldn't find a tool matching “${toolSearch}”.` : "Try another category."}</p>
+                <p>{hasSearch ? `We couldn't find a tool matching â€œ${toolSearch}â€.` : "Try another category."}</p>
                 {(hasSearch || toolCategory !== "All") && (
                   <button type="button" className="primary-button" onClick={() => { setToolSearch(""); setToolCategory("All"); }}>
                     Show All Tools
@@ -616,7 +627,7 @@ function PublisherToolsPage({
               <p style={{ lineHeight: 1.8, opacity: 0.8 }}>
                 The best way to understand an AI product is to see it used for a concrete job. AI TechSphere also publishes comparisons, tutorials, prompt examples and practical workflows so you can move from choosing a tool to actually using it.
               </p>
-              <button className="primary-button" onClick={() => openArticles("All")}>Read AI & Tech Guides →</button>
+              <button className="primary-button" onClick={() => openArticles("All")}>Read AI & Tech Guides â†’</button>
             </div>
           </div>
         </section>
@@ -625,8 +636,8 @@ function PublisherToolsPage({
       <footer className="footer">
         <div className="section-container">
           <div className="footer-bottom">
-            <span>© 2026 AI TechSphere. All rights reserved.</span>
-            <span>Built for the AI generation 🚀</span>
+            <span>Â© 2026 AI TechSphere. All rights reserved.</span>
+            <span>Built for the AI generation ðŸš€</span>
           </div>
         </div>
       </footer>
@@ -664,8 +675,6 @@ function App() {
   const [newsSearch, setNewsSearch] = useState("");
   const [expandedNews, setExpandedNews] = useState(null);
 
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
 
   /* =======================================================
      SEO / META TAGS
@@ -692,7 +701,7 @@ function App() {
       ? `${article.title} | ${SITE_NAME}`
       : legalPage
       ? legalTitles[legalPage] || SITE_NAME
-      : `${SITE_NAME} — AI Tools, Guides & Tech Reviews`;
+      : `${SITE_NAME} â€” AI Tools, Guides & Tech Reviews`;
     const description = article?.excerpt || legalDescriptions[legalPage] || SITE_DESCRIPTION;
     const canonicalUrl = article
       ? `${window.location.origin}${window.location.pathname}?article=${encodeURIComponent(slug)}`
@@ -1018,15 +1027,6 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-
-    if (!email.trim()) return;
-
-    setSubscribed(true);
-    setEmail("");
-  };
-
   /* =======================================================
      SHOW ARTICLE PAGE
      ======================================================= */
@@ -1123,7 +1123,7 @@ function App() {
 
         <main style={{ maxWidth: "900px", margin: "0 auto", padding: "80px 24px 100px" }}>
           <button type="button" onClick={goHome} style={{ marginBottom: "28px", background: "transparent", border: "none", color: "inherit", cursor: "pointer", fontSize: "15px" }}>
-            ← Back to AI TechSphere
+            â† Back to AI TechSphere
           </button>
 
           <div style={{ maxWidth: "780px" }}>
@@ -1167,8 +1167,8 @@ function App() {
         <footer className="footer">
           <div className="section-container">
             <div className="footer-bottom">
-              <span>© 2026 AI TechSphere. All rights reserved.</span>
-              <span>Built for the AI generation 🚀</span>
+              <span>Â© 2026 AI TechSphere. All rights reserved.</span>
+              <span>Built for the AI generation ðŸš€</span>
             </div>
           </div>
         </footer>
@@ -1270,7 +1270,7 @@ function App() {
         <div className="hero-content">
 
           <div className="hero-badge">
-            🚀 AI tools, guides & practical tech
+            ðŸš€ AI tools, guides & practical tech
           </div>
 
           <h1>
@@ -1282,7 +1282,7 @@ function App() {
 
           <p>
             Find useful AI tools, practical guides, honest comparisons and
-            creator-friendly tutorials — all in one place.
+            creator-friendly tutorials â€” all in one place.
           </p>
 
           <div className="hero-buttons">
@@ -1291,7 +1291,7 @@ function App() {
               className="primary-button"
               onClick={() => openTools("All")}
             >
-              Explore AI Tools →
+              Explore AI Tools â†’
             </button>
 
             <button
@@ -1350,7 +1350,7 @@ function App() {
 
           <div className="ai-news-controls">
             <div className="ai-news-search-wrap">
-              <span>⌕</span>
+              <span>âŒ•</span>
               <input
                 value={newsSearch}
                 onChange={(event) => setNewsSearch(event.target.value)}
@@ -1383,6 +1383,16 @@ function App() {
               const isExpanded = expandedNews === item.id;
               return (
                 <article className="ai-news-card" key={item.id}>
+                  <div className="ai-news-image-wrap">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="ai-news-image"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="ai-news-image-label">AI TechSphere Editorial</span>
+                  </div>
                   <div className="ai-news-card-top">
                     <span>{item.category}</span>
                     <time>{item.date}</time>
@@ -1408,14 +1418,14 @@ function App() {
                         setExpandedNews(isExpanded ? null : item.id)
                       }
                     >
-                      {isExpanded ? "Hide analysis ↑" : "Read analysis ↓"}
+                      {isExpanded ? "Hide analysis â†‘" : "Read analysis â†“"}
                     </button>
                     <a
                       href={item.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Source: {item.source} ↗
+                      Source: {item.source} â†—
                     </a>
                   </div>
                 </article>
@@ -1482,10 +1492,10 @@ function App() {
               </p>
             </div>
             <div className="ai-editorial-points">
-              <span>✓ Identify the original source</span>
-              <span>✓ Explain practical impact</span>
-              <span>✓ Flag changing features and pricing</span>
-              <span>✓ Avoid copying press releases</span>
+              <span>âœ“ Identify the original source</span>
+              <span>âœ“ Explain practical impact</span>
+              <span>âœ“ Flag changing features and pricing</span>
+              <span>âœ“ Avoid copying press releases</span>
             </div>
           </div>
         </div>
@@ -1499,7 +1509,7 @@ function App() {
 
         <div className="search-box">
 
-          <span>🔍</span>
+          <span>ðŸ”</span>
 
           <input
             type="text"
@@ -1566,7 +1576,7 @@ function App() {
                       color: "rgba(255,255,255,0.62)",
                     }}
                   >
-                    ✦ Editor's Pick
+                    âœ¦ Editor's Pick
                   </span>
                 </div>
 
@@ -1589,9 +1599,9 @@ function App() {
                     fontSize: "14px",
                   }}
                 >
-                  <span>📖 Practical guide</span>
+                  <span>ðŸ“– Practical guide</span>
                   {articles[0].readTime && (
-                    <span>• {articles[0].readTime}</span>
+                    <span>â€¢ {articles[0].readTime}</span>
                   )}
                 </div>
 
@@ -1601,7 +1611,7 @@ function App() {
                     openArticle(articles[0])
                   }
                 >
-                  Read Full Article →
+                  Read Full Article â†’
                 </button>
               </div>
 
@@ -1652,7 +1662,7 @@ function App() {
                         fontWeight: 700,
                       }}
                     >
-                      Featured guide ↗
+                      Featured guide â†—
                     </div>
                   </>
                 ) : (
@@ -1694,7 +1704,7 @@ function App() {
                 <div className="ai-explainer-icon">{item.icon}</div>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
-                <span>AI TechSphere Explainer →</span>
+                <span>AI TechSphere Explainer â†’</span>
               </article>
             ))}
           </div>
@@ -1774,7 +1784,7 @@ function App() {
                     }
                   }}
                 >
-                  Copy Prompt ↗
+                  Copy Prompt â†—
                 </button>
               </article>
             ))}
@@ -1891,7 +1901,7 @@ function App() {
                 openArticles("All")
               }
             >
-              View All →
+              View All â†’
             </button>
 
           </div>
@@ -1994,7 +2004,7 @@ function App() {
                   </p>
 
                   <span className="article-link">
-                    Read More →
+                    Read More â†’
                   </span>
 
                 </div>
@@ -2049,7 +2059,7 @@ function App() {
           <div className="category-grid">
 
             <ToolCard
-              icon="💬"
+              icon="ðŸ’¬"
               title="AI Chat"
               description="Chatbots, assistants and AI companions."
               color="purple"
@@ -2059,7 +2069,7 @@ function App() {
             />
 
             <ToolCard
-              icon="🎨"
+              icon="ðŸŽ¨"
               title="AI Images"
               description="Generate stunning images and artwork."
               color="pink"
@@ -2069,7 +2079,7 @@ function App() {
             />
 
             <ToolCard
-              icon="🎬"
+              icon="ðŸŽ¬"
               title="AI Video"
               description="Create videos with generative AI."
               color="blue"
@@ -2079,7 +2089,7 @@ function App() {
             />
 
             <ToolCard
-              icon="✍️"
+              icon="âœï¸"
               title="AI Writing"
               description="Write, edit and improve content."
               color="green"
@@ -2089,7 +2099,7 @@ function App() {
             />
 
             <ToolCard
-              icon="🔊"
+              icon="ðŸ”Š"
               title="AI Audio"
               description="Generate voices, music and audio."
               color="orange"
@@ -2099,7 +2109,7 @@ function App() {
             />
 
             <ToolCard
-              icon="⚙️"
+              icon="âš™ï¸"
               title="Productivity"
               description="Automate tasks and work smarter."
               color="cyan"
@@ -2118,7 +2128,7 @@ function App() {
                 openTools("All")
               }
             >
-              Explore All AI Tools →
+              Explore All AI Tools â†’
             </button>
 
           </div>
@@ -2161,7 +2171,7 @@ function App() {
             <div className="why-card">
 
               <div className="why-icon">
-                🔎
+                ðŸ”Ž
               </div>
 
               <h3>
@@ -2178,7 +2188,7 @@ function App() {
             <div className="why-card">
 
               <div className="why-icon">
-                📚
+                ðŸ“š
               </div>
 
               <h3>
@@ -2195,7 +2205,7 @@ function App() {
             <div className="why-card">
 
               <div className="why-icon">
-                ⚡
+                âš¡
               </div>
 
               <h3>
@@ -2272,7 +2282,7 @@ function App() {
                 }}
               >
                 <strong style={{ display: "block", marginBottom: "8px" }}>
-                  ✦ Practical
+                  âœ¦ Practical
                 </strong>
                 <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
                   Clear guides focused on real use cases.
@@ -2288,7 +2298,7 @@ function App() {
                 }}
               >
                 <strong style={{ display: "block", marginBottom: "8px" }}>
-                  ✓ Transparent
+                  âœ“ Transparent
                 </strong>
                 <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
                   Recommendations and affiliate relationships are disclosed.
@@ -2304,7 +2314,7 @@ function App() {
                 }}
               >
                 <strong style={{ display: "block", marginBottom: "8px" }}>
-                  ↻ Updated
+                  â†» Updated
                 </strong>
                 <span style={{ opacity: 0.72, lineHeight: 1.6 }}>
                   We review content as tools and features evolve.
@@ -2367,7 +2377,7 @@ function App() {
           <div className="reviews-grid">
 
             <div className="review-card">
-              <div className="stars">✦</div>
+              <div className="stars">âœ¦</div>
               <h3>Practical guides</h3>
               <p>
                 Step-by-step explainers, workflows and comparisons designed around real tasks.
@@ -2375,7 +2385,7 @@ function App() {
             </div>
 
             <div className="review-card">
-              <div className="stars">✓</div>
+              <div className="stars">âœ“</div>
               <h3>Clear recommendations</h3>
               <p>
                 We explain what a tool is useful for, who it may suit and what to check before using it.
@@ -2383,7 +2393,7 @@ function App() {
             </div>
 
             <div className="review-card">
-              <div className="stars">↻</div>
+              <div className="stars">â†»</div>
               <h3>Useful over time</h3>
               <p>
                 AI products change quickly, so our guides can be reviewed and updated as information evolves.
@@ -2411,8 +2421,8 @@ function App() {
                 AI TechSphere is designed as a practical reference rather than a
                 collection of copied announcements. We combine AI news, original
                 explainers, tool discovery, comparisons, tutorials and workflow
-                ideas so a reader can move from “What happened?” to “What does
-                this mean for me?”.
+                ideas so a reader can move from â€œWhat happened?â€ to â€œWhat does
+                this mean for me?â€.
               </p>
               <div className="ai-update-actions">
                 <button
@@ -2420,26 +2430,26 @@ function App() {
                   className="primary-button"
                   onClick={() => scrollToSection("ai-news")}
                 >
-                  Read AI News →
+                  Read AI News â†’
                 </button>
                 <button
                   type="button"
                   className="secondary-button"
                   onClick={() => openArticles("All")}
                 >
-                  Browse Guides →
+                  Browse Guides â†’
                 </button>
               </div>
             </div>
 
             <div className="ai-update-checklist">
               <h3>What we aim to do on every update</h3>
-              <div>✓ Find the original announcement or source</div>
-              <div>✓ Summarize in original language</div>
-              <div>✓ Explain the practical user impact</div>
-              <div>✓ Separate facts from interpretation</div>
-              <div>✓ Point readers to official details</div>
-              <div>✓ Review information when products change</div>
+              <div>âœ“ Find the original announcement or source</div>
+              <div>âœ“ Summarize in original language</div>
+              <div>âœ“ Explain the practical user impact</div>
+              <div>âœ“ Separate facts from interpretation</div>
+              <div>âœ“ Point readers to official details</div>
+              <div>âœ“ Review information when products change</div>
             </div>
           </div>
 
@@ -2591,12 +2601,12 @@ function App() {
           <div className="footer-bottom">
 
             <span>
-              © 2026 AI TechSphere.
+              Â© 2026 AI TechSphere.
               All rights reserved.
             </span>
 
             <span>
-              Built for the AI generation 🚀
+              Built for the AI generation ðŸš€
             </span>
 
           </div>
@@ -2754,6 +2764,43 @@ const AIHomeStyles = () => (
       display: flex;
       flex-direction: column;
       min-height: 100%;
+    }
+
+
+    .ai-news-image-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 16px;
+      margin: -6px -6px 20px;
+      background: #171c3b;
+    }
+
+    .ai-news-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .35s ease;
+    }
+
+    .ai-news-card:hover .ai-news-image {
+      transform: scale(1.035);
+    }
+
+    .ai-news-image-label {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(8, 11, 29, .78);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.88);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      backdrop-filter: blur(8px);
     }
 
     .ai-news-card-top {
@@ -3383,6 +3430,20 @@ const AIHomeStyles = () => (
       .prompt-lab-badge { width: 100%; box-sizing: border-box; }
       .ai-news-actions { align-items: flex-start; flex-direction: column; }
       .ai-newsroom-date { width: auto; }
+    }
+    @media (max-width: 900px) {
+      .ai-news-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ai-news-grid {
+        grid-template-columns: 1fr;
+      }
+      .ai-news-image-wrap {
+        margin: -4px -4px 18px;
+      }
     }
   `}</style>
 );
