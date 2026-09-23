@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { Fragment, memo } from "react";
 import articles from "../data/articles";
 
 function ArticlePage({
@@ -30,6 +30,46 @@ function ArticlePage({
         article.category === "AI"
     )
     .slice(0, 3);
+
+  const contextualLinks = (() => {
+    const title = `${article.title || ""} ${article.excerpt || ""}`.toLowerCase();
+    const rules = [
+      {
+        terms: ["chatgpt", "gemini", "claude", "ai assistant"],
+        keywords: ["chatgpt", "gemini", "claude"],
+      },
+      {
+        terms: ["image", "midjourney", "ideogram", "ai images"],
+        keywords: ["image", "midjourney", "ideogram"],
+      },
+      {
+        terms: ["video", "runway", "kling", "pika"],
+        keywords: ["video", "runway", "kling", "pika"],
+      },
+      {
+        terms: ["laptop", "ram", "windows 11"],
+        keywords: ["laptop", "ram", "windows 11"],
+      },
+      {
+        terms: ["youtube", "youtuber", "creator"],
+        keywords: ["youtube", "youtuber", "creator"],
+      },
+    ];
+
+    const matched = rules.find((rule) =>
+      rule.terms.some((term) => title.includes(term))
+    );
+
+    if (!matched) return [];
+
+    return articles
+      .filter((item) => item.id !== article.id)
+      .filter((item) => {
+        const text = `${item.title || ""} ${item.excerpt || ""}`.toLowerCase();
+        return matched.keywords.some((keyword) => text.includes(keyword));
+      })
+      .slice(0, 2);
+  })();
 
   const scrollToSection = (index) => {
     document
@@ -67,6 +107,19 @@ function ArticlePage({
 
       <main className="single-article">
         <div className="section-container">
+          <nav className="article-breadcrumbs" aria-label="Breadcrumb">
+  <button type="button" onClick={goHome}>
+    AI TechSphere
+  </button>
+  <span>›</span>
+  <button type="button" onClick={() => openArticles("All")}>
+    Articles
+  </button>
+  <span>›</span>
+  <span className="article-breadcrumb-current">
+    {article.title}
+  </span>
+</nav>
           <button
             className="back-button"
             onClick={() => openArticles("All")}
@@ -87,15 +140,22 @@ function ArticlePage({
             <p className="article-header-excerpt">{article.excerpt}</p>
 
             <div className="article-meta premium-article-meta">
-              <span className="article-author">✍️ {article.author || "AI TechSphere"}</span>
+              <span className="article-author">✍️ {article.author || "AI TechSphere Editorial Team"}</span>
               <span>•</span>
-              <span>📅 {article.date || "2026"}</span>
+              <span>📅 Published {article.date || "2026"}</span>
               {article.readTime && (
                 <>
                   <span>•</span>
                   <span>⏱️ {article.readTime}</span>
                 </>
               )}
+            </div>
+
+            <div className="article-editorial-note">
+              <strong>Editorial note</strong>
+              <span>
+                We aim to keep this guide practical and useful. Product features, pricing and availability can change, so check the official provider for the latest details.
+              </span>
             </div>
 
             <div className="article-share-row">
@@ -174,8 +234,8 @@ function ArticlePage({
               </div>
 
               {sections.map((section, index) => (
+                <Fragment key={index}>
                 <section
-                  key={index}
                   id={`article-section-${index}`}
                   className="article-content-section"
                 >
@@ -318,6 +378,40 @@ function ArticlePage({
                     </div>
                   )}
                 </section>
+
+                {index === 1 && contextualLinks.length > 0 && (
+                  <div className="article-inline-links">
+                    <div className="section-label">
+                      <span></span>
+                      RELATED GUIDES
+                    </div>
+                    <h3>Keep exploring AI TechSphere</h3>
+                    <p>Useful guides related to this topic:</p>
+                    <div className="article-inline-links-grid">
+                      {contextualLinks.map((item) => (
+                        <a
+                          key={item.id}
+                          href={`?article=${encodeURIComponent(
+                            item.slug ||
+                              item.title
+                                ?.toLowerCase()
+                                .replace(/[^a-z0-9]+/g, "-")
+                                .replace(/(^-|-$)/g, "")
+                          )}`}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            openArticle(item);
+                          }}
+                        >
+                          <span>{item.category}</span>
+                          <strong>{item.title}</strong>
+                          <small>Read guide →</small>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                </Fragment>
               ))}
 
               <div className="article-action-box">
@@ -385,16 +479,26 @@ function ArticlePage({
 
                   <div className="related-article-grid">
                     {relatedArticles.map((item) => (
-                      <button
+                      <a
                         key={item.id}
                         className="related-article-card"
-                        onClick={() => openArticle(item)}
+                        href={`?article=${encodeURIComponent(
+                          item.slug ||
+                            item.title
+                              ?.toLowerCase()
+                              .replace(/[^a-z0-9]+/g, "-")
+                              .replace(/(^-|-$)/g, "")
+                        )}`}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          openArticle(item);
+                        }}
                       >
                         <span>{item.category}</span>
                         <h3>{item.title}</h3>
                         <p>{item.excerpt}</p>
-                        <strong>Read Articles →</strong>
-                      </button>
+                        <strong>Read Article →</strong>
+                      </a>
                     ))}
                   </div>
                 </div>

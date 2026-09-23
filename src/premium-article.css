@@ -211,3 +211,43 @@
     max-height: 320px;
   }
 }
+
+
+/* =========================================================
+   AFFILIATE-READY TOOL CTA
+   ========================================================= */
+
+.article-tool-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.affiliate-note {
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: 0.62;
+}
+
+.article-tool-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.article-tool-button:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+  .article-tool-bottom {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .article-tool-button {
+    width: 100%;
+  }
+}
